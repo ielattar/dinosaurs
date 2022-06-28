@@ -6,10 +6,10 @@
 		this.species=dino.species;
 		this.weight=dino.weight;
 		this.height=dino.height;
-		this.diet=diet;
-		this.where=where;
-		this.when=when;
-		this.fact=fact;
+		this.diet=dino.diet;
+		this.where=dino.where;
+		this.when=dino.when;
+		this.fact=dino.fact;
 	}
 	
 	const dinosData = async () => {
@@ -21,9 +21,12 @@
 	
 	btn.addEventListener('click', async function(event) {
 		// wait dinosData complete
-		const dinos = await dinosData();
+		const dinosArray = await dinosData();
 		// do something with dinos
+		//console.log(dinos);
+		dinos=dinosArray.map((dino) => new Dino(dino));
 		console.log(dinos);
+		//console.log(new Dino(dinosArray[0]));
 	});
 	
 	
