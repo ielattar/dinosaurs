@@ -27,10 +27,27 @@
 		//console.log(dinos);
 		dinos=dinosArray.map((dino) => new Dino(dino));
 		console.log(dinos);
+		const imagesFolderUrl=window.location.href+'/images/';
 		//console.log(new Dino(dinosArray[0]));
-	});
+		
+		const grid = document.getElementById('grid');
+		const tiles=[];
+		
+		dinos.forEach(function(dino){
+			const aTile=document.createElement("div");
+			aTile.className="grid-item";
+			const aTileHeader=document.createElement("h3");
+			aTileHeader.textContent=dino.species;
+			aTile.appendChild(aTileHeader);
+			const aTileImage=document.createElement('img');
+			aTileImage.setAttribute("src",imagesFolderUrl+dino.species+".PNG");
+			
+			
+		});
+		
+	})
 	
-	
+		//grid.appendChild(aTile);
 
     // Create Human Object
 	
@@ -55,12 +72,7 @@
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
-	
-    
-    // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-    Dino.prototype.compareWeight=function(ahuman){
+	 Dino.prototype.compareWeight=function(ahuman){
 		const difference = this.weight - ahuman.weight;
 		const verdict = "heavier";
 		if (difference < 0){
@@ -68,6 +80,11 @@
 		}	
 		this.otherfacts.push( this.name + " is " + difference + " lbs"+ verdict + " than " + ahuman.name);
 	};
+    
+    // Create Dino Compare Method 2
+    // NOTE: Weight in JSON file is in lbs, height in inches.
+
+   
 	
 	
 	Dino.prototype.compareDiet=function(ahuman){
@@ -88,6 +105,7 @@
 	};
 
     // Generate Tiles for each Dino in Array
+	
   
         // Add tiles to DOM
 
