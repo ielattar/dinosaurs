@@ -3,6 +3,7 @@
 	
 	
 	function Dino(dino){
+		this.otherfacts=[];
 		this.species=dino.species;
 		this.weight=dino.weight;
 		this.height=dino.height;
@@ -32,21 +33,59 @@
 	
 
     // Create Human Object
+	
+	function Human(aform)
+	{
+		this.name=aform.name.value;
+		this.feet=aform.feet.value;
+		this.inches=aform.inches.value;
+		this.weight=aform.weight.value;
+		this.diet=aform.diet.value;
+	}
 
     // Use IIFE to get human data from form
-
+    
+	btn.addEventListener('click',
+		function (){
+			const humanForm = document.getElementById('dino-compare');
+			const human= new Human(humanForm);
+			console.log(human);
+		}
+	)
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
-
+	
     
     // Create Dino Compare Method 2
     // NOTE: Weight in JSON file is in lbs, height in inches.
 
+    Dino.prototype.compareWeight=function(ahuman){
+		const difference = this.weight - ahuman.weight;
+		const verdict = "heavier";
+		if (difference < 0){
+			let verdict="lighter";
+		}	
+		this.otherfacts.push( this.name + " is " + difference + " lbs"+ verdict + " than " + ahuman.name);
+	};
+	
+	
+	Dino.prototype.compareDiet=function(ahuman){
+		this.otherfacts.push(this.name + " is " + this.diet + " while " + ahuman.name + " is " + ahuman.diet);
+	};
     
     // Create Dino Compare Method 3
     // NOTE: Weight in JSON file is in lbs, height in inches.
-
+	
+	Dino.prototype.compareHeight=function(ahuman){
+		humanHeightInches = ahuman.feet*12 + ahuman.inches;
+		const difference = this.height - humanHeightInches;
+		const verdict = "taller";
+		if (difference < 0){
+			let verdict="shorter";
+		}	
+		this.otherfacts.push( this.name + " is " + difference + " inches "+ verdict + " than " + ahuman.name);
+	};
 
     // Generate Tiles for each Dino in Array
   
