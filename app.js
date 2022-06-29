@@ -84,16 +84,39 @@
 			const aTileFact=document.createElement('p');
 			aTileFact.innerText=dino.getFact();
 			aTile.appendChild(aTileFact);
-			dino.setTile(aTile);
-			
+			dino.setTile(aTile);	
 		});
+		
+		
+		//Fetch grid and make sure its empty.
+		const grid = document.getElementById('grid');
+		while (grid.firstChild) {
+			grid.removeChild(grid.firstChild);
+		}
+		
+		const pigeonDino = dinos.pop();
+		//const piegonTile=pigeonDino.getTile();
+		console.log(pigeonDino.tile);
+		//console.log(dinos);
+		//Shuffle the remaining dinos.
+		dinos.sort(() => Math.random() - 0.5);
+		
+		dinos.slice(0,4).forEach(function(dino){
+			grid.appendChild(dino.tile);
+		});
+		//Add human tile.
+		grid.appendChild(ahuman.tile);
+		//Add remaining tiles.
+		dinos.slice(4,7).forEach(function(dino){
+			grid.appendChild(dino.tile);
+		});
+		//Add pigeon tile.
+		grid.appendChild(pigeonDino.tile);
+		//Remove form from screen.
+		const form = document.getElementById('dino-compare').remove();	
 		
 	})
 	
-	const grid = document.getElementById('grid');
-	const tiles=[];
-	
-		//grid.appendChild(aTile);
 
     // Create Human Object
 	
@@ -112,16 +135,10 @@
 
     // Use IIFE to get human data from form
     
-	/*btn.addEventListener('click',
-		function (){
-			const humanForm = document.getElementById('dino-compare');
-			const human= new Human(humanForm);
-			console.log(human);
-		}
-	)*/
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
+	
 	 Dino.prototype.compareWeight=function(ahuman){
 		if (! this.isPigeon){
 			const difference = this.weight - ahuman.weight;
@@ -134,9 +151,7 @@
 	};
     
     // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
-   
+    // NOTE: Weight in JSON file is in lbs, height in inches.   
 	
 	
 	Dino.prototype.compareDiet=function(ahuman){
@@ -160,12 +175,4 @@
 		}	
 	};
 
-    // Generate Tiles for each Dino in Array
-	
-  
-        // Add tiles to DOM
 
-    // Remove form from screen
-
-
-// On button click, prepare and display infographic
