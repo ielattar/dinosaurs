@@ -3,7 +3,8 @@
 	
 	
 	function Dino(dino){
-		this.otherfacts=[];
+		this.facts=[];
+		this.isPigeon=false;
 		this.species=dino.species;
 		this.weight=dino.weight;
 		this.height=dino.height;
@@ -11,6 +12,28 @@
 		this.where=dino.where;
 		this.when=dino.when;
 		this.fact=dino.fact;
+		this.tile=null;
+		
+		if (dino.species=="Pigeon")
+		{
+			this.isPigeon = true;
+		}
+			
+		//add the fact to the facts array.
+		this.facts.push(this.fact);
+		this.setTile = function(aTile){
+				this.tile = aTile;
+		}
+		this.addFact=function(aFact){
+			this.facts.push(aFact);
+		}
+		this.getFact=function(){
+			//Gets a random fact from the facts array.
+			let facts=this.facts
+			randomIndex=Math.floor(Math.random()*facts.length);
+			const afact=facts[randomIndex];
+			return afact;
+		}
 	}
 	
 	const dinosData = async () => {
@@ -30,10 +53,26 @@
 		const imagesFolderUrl=window.location.href+'/images/';
 		//console.log(new Dino(dinosArray[0]));
 		
-		const grid = document.getElementById('grid');
-		const tiles=[];
+		//Fetch human data.
+		const humanForm = document.getElementById('dino-compare');
+		const ahuman= new Human(humanForm);
+		
+		//Create and set a human Tile.
+		
+		const humanTile=document.createElement("div");
+		humanTile.className="grid-item";
+		const aHeader=document.createElement("h3");
+		aHeader.textContent=ahuman.name;
+		humanTile.appendChild(aHeader);
+		const anImage=document.createElement('img');
+		anImage.setAttribute("src",imagesFolderUrl+"human.PNG");
+		humanTile.appendChild(anImage);
+		ahuman.setTile(humanTile);		
 		
 		dinos.forEach(function(dino){
+			dino.compareDiet(ahuman);
+			dino.compareHeight(ahuman);
+			dino.compareWeight(ahuman);
 			const aTile=document.createElement("div");
 			aTile.className="grid-item";
 			const aTileHeader=document.createElement("h3");
@@ -41,11 +80,18 @@
 			aTile.appendChild(aTileHeader);
 			const aTileImage=document.createElement('img');
 			aTileImage.setAttribute("src",imagesFolderUrl+dino.species+".PNG");
-			
+			aTile.appendChild(aTileImage);
+			const aTileFact=document.createElement('p');
+			aTileFact.innerText=dino.getFact();
+			aTile.appendChild(aTileFact);
+			dino.setTile(aTile);
 			
 		});
 		
 	})
+	
+	const grid = document.getElementById('grid');
+	const tiles=[];
 	
 		//grid.appendChild(aTile);
 
@@ -58,27 +104,33 @@
 		this.inches=aform.inches.value;
 		this.weight=aform.weight.value;
 		this.diet=aform.diet.value;
+		this.tile-null;
+		this.setTile=function(aTile){
+			this.tile=aTile;
+		}
 	}
 
     // Use IIFE to get human data from form
     
-	btn.addEventListener('click',
+	/*btn.addEventListener('click',
 		function (){
 			const humanForm = document.getElementById('dino-compare');
 			const human= new Human(humanForm);
 			console.log(human);
 		}
-	)
+	)*/
 
     // Create Dino Compare Method 1
     // NOTE: Weight in JSON file is in lbs, height in inches. 
 	 Dino.prototype.compareWeight=function(ahuman){
-		const difference = this.weight - ahuman.weight;
-		const verdict = "heavier";
-		if (difference < 0){
-			let verdict="lighter";
-		}	
-		this.otherfacts.push( this.name + " is " + difference + " lbs"+ verdict + " than " + ahuman.name);
+		if (! this.isPigeon){
+			const difference = this.weight - ahuman.weight;
+			const verdict = "heavier";
+			if (difference < 0){
+				let verdict="lighter";
+			}	
+			this.addFact( this.species + " is " + Math.abs(difference) + " lbs "+ verdict + " than " + ahuman.name);
+		}
 	};
     
     // Create Dino Compare Method 2
@@ -88,20 +140,24 @@
 	
 	
 	Dino.prototype.compareDiet=function(ahuman){
-		this.otherfacts.push(this.name + " is " + this.diet + " while " + ahuman.name + " is " + ahuman.diet);
+		if (! this.isPigeon){
+			this.addFact(this.species + " is " + this.diet + " while " + ahuman.name + " is " + ahuman.diet);
+		}
 	};
     
     // Create Dino Compare Method 3
     // NOTE: Weight in JSON file is in lbs, height in inches.
 	
 	Dino.prototype.compareHeight=function(ahuman){
-		humanHeightInches = ahuman.feet*12 + ahuman.inches;
-		const difference = this.height - humanHeightInches;
-		const verdict = "taller";
-		if (difference < 0){
-			let verdict="shorter";
+		if (! this.isPigeon){
+			humanHeightInches = ahuman.feet*12 + ahuman.inches;
+			const difference = this.height - humanHeightInches;
+			const verdict = "taller";
+			if (difference < 0){
+				let verdict="shorter";
+			}	
+			this.addFact(this.species + " is " + Math.abs(difference) + " inches "+ verdict + " than " + ahuman.name);
 		}	
-		this.otherfacts.push( this.name + " is " + difference + " inches "+ verdict + " than " + ahuman.name);
 	};
 
     // Generate Tiles for each Dino in Array
