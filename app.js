@@ -44,13 +44,13 @@
 	
 	
 	btn.addEventListener('click', async function(event) {
-		// wait dinosData complete
+		//wait dinosData complete
 		const dinosArray = await dinosData();
-		// do something with dinos
+		//do something with dinos
 		//console.log(dinos);
 		dinos=dinosArray.map((dino) => new Dino(dino));
 		console.log(dinos);
-		const imagesFolderUrl=window.location.href+'/images/';
+		const imagesFolderUrl='images/';
 		//console.log(new Dino(dinosArray[0]));
 		
 		//Fetch human data.
@@ -65,7 +65,7 @@
 		aHeader.textContent=ahuman.name;
 		humanTile.appendChild(aHeader);
 		const anImage=document.createElement('img');
-		anImage.setAttribute("src",imagesFolderUrl+"human.PNG");
+		anImage.setAttribute("src",imagesFolderUrl+"human.png");
 		humanTile.appendChild(anImage);
 		ahuman.setTile(humanTile);		
 		
@@ -79,7 +79,7 @@
 			aTileHeader.textContent=dino.species;
 			aTile.appendChild(aTileHeader);
 			const aTileImage=document.createElement('img');
-			aTileImage.setAttribute("src",imagesFolderUrl+dino.species+".PNG");
+			aTileImage.setAttribute("src",imagesFolderUrl+dino.species.toLowerCase()+".png");
 			aTile.appendChild(aTileImage);
 			const aTileFact=document.createElement('p');
 			aTileFact.innerText=dino.getFact();
